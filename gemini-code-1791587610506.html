@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Retro Lab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+        :root {
+            --bg-color: #0b0c10;
+            --grid-color: #ff007f;
+            --text-main: #00f0ff;
+            --text-secondary: #fce803;
+            --scanline-color: rgba(0, 0, 0, 0.3);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'VT323', monospace;
+            overflow-x: hidden;
+        }
+
+        /* Effet d'écran cathodique (CRT) */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                to bottom,
+                var(--scanline-color) 50%,
+                transparent 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.6;
+        }
+
+        /* Grille Synthwave animée */
+        .grid-container {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 50vh;
+            perspective: 600px;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .grid {
+            position: absolute;
+            width: 200vw;
+            height: 200vh;
+            bottom: -50vh;
+            left: -50vw;
+            background-image: 
+                linear-gradient(var(--grid-color) 2px, transparent 2px),
+                linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
+            background-size: 50px 50px;
+            transform: rotateX(75deg);
+            animation: gridMove 2s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: rotateX(75deg) translateY(0); }
+            100% { transform: rotateX(75deg) translateY(50px); }
+        }
+
+        /* Soleil Retrowave */
+        .sun {
+            position: fixed;
+            bottom: 40vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(to bottom, #ffea00, #ff007f);
+            border-radius: 50%;
+            box-shadow: 0 0 50px #ff007f;
+            z-index: -3;
+        }
+
+        .sun::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40%;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 5px,
+                var(--bg-color) 5px,
+                var(--bg-color) 15px
+            );
+            border-radius: 0 0 150px 150px;
+        }
+
+        /* Conteneur principal */
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3rem;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--text-main);
+            text-shadow: 0 0 10px var(--text-main), 0 0 20px var(--text-main), 4px 4px 0px #ff007f;
+            margin-top: 5vh;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* Style pour l'image Pac-Man sans fond noir */
+        .pacman-gif {
+            max-width: 100%;
+            height: auto;
+            max-height: 80px; /* Ajustez la taille selon vos préférences */
+            margin-bottom: 40px;
+            mix-blend-mode: screen; /* C'est cette ligne qui rend le fond noir transparent ! */
+            opacity: 0.9;
+        }
+
+        /* Section Projets */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        /* Liens des cartes */
+        .project-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .project-card {
+            background: rgba(11, 12, 16, 0.8);
+            border: 4px solid var(--text-main);
+            padding: 20px;
+            box-shadow: 8px 8px 0px var(--grid-color);
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .project-card:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 13px 13px 0px var(--text-secondary), 0 0 20px var(--text-main);
+            border-color: var(--text-secondary);
+        }
+
+        .project-card h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.1rem;
+            color: var(--grid-color);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .project-card p {
+            font-size: 1.3rem;
+            line-height: 1.4;
+        }
+
+        /* Bouton rétro */
+        .btn {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 15px 30px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--bg-color);
+            background-color: var(--text-main);
+            border: none;
+            box-shadow: 5px 5px 0px var(--grid-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--text-secondary);
+            box-shadow: 5px 5px 0px var(--text-main);
+        }
+
+        footer {
+            margin-top: 80px;
+            padding-bottom: 20px;
+            font-size: 1.2rem;
+            color: rgba(0, 240, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sun"></div>
+    <div class="grid-container">
+        <div class="grid"></div>
+    </div>
+
+    <div class="content">
+        <h1>Power Retro Lab</h1>
+        
+        <!-- L'image GIF remplace le texte SYSTEM BOOT -->
+        <!-- Assurez-vous que le nom du fichier ("pacman.gif") correspond à celui que vous avez mis sur GitHub -->
+        <img src="pacman.gif" alt="Pac-Man Loading" class="pacman-gif">
+
+        <div class="projects-grid">
+            <!-- Lien vers la page article.html -->
+            <a href="article.html" class="project-link">
+                <div class="project-card">
+                    <h2>BOÎTIER MEGA-X<br>& SANYO PHC-25</h2>
+                    <p>Développement de scripts OpenSCAD et impression 3D sur Bambu Lab A1 pour créer des boîtiers customisés dédiés à la préservation du Sanyo PHC-25.</p>
+                </div>
+            </a>
+
+            <!-- Lien vers la page article.html -->
+            <a href="article.html" class="project-link">
+                <div class="project-card">
+                    <h2>REVERSE ENGINEERING<br>PS2 EYETOY: CHAT</h2>
+                    <p>Analyse du trafic réseau et rétro-ingénierie des serveurs Medius/SCERT. Compilation d'exécutables ELF avec le PS2SDK pour restaurer les fonctionnalités en ligne.</p>
+                </div>
+            </a>
+
+            <!-- Lien vers la page article.html -->
+            <a href="article.html" class="project-link">
+                <div class="project-card">
+                    <h2>APPLE II EUROPLUS<br>& ECRANS CRT</h2>
+                    <p>Restauration d'alimentations Astec (suppression des condensateurs RIFA) et maintenance de moniteurs cathodiques Thomson et Sony Trinitron.</p>
+                </div>
+            </a>
+        </div>
+
+        <a href="mailto:contact@powerretrolab.com" class="btn">INITIALISER CONTACT</a>
+
+        <footer>
+            (c) 2026 POWER RETRO LAB // TRANSMISSION SECURISEE
+        </footer>
+    </div>
+
+</body>
+</html>
