@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture des Archives - Power Retro Lab</title>
-    <!-- Chargement de Marked.js pour lire le Markdown -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>Power JV Lab</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
@@ -18,107 +16,661 @@
         }
 
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: var(--bg-color); color: var(--text-main);
-            font-family: 'VT323', monospace; overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'VT323', monospace;
+            overflow-x: hidden;
         }
 
+        /* Effet d'écran cathodique (CRT) */
         body::after {
-            content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(to bottom, var(--scanline-color) 50%, transparent 50%);
-            background-size: 100% 4px; pointer-events: none; z-index: 1000; opacity: 0.6;
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                to bottom,
+                var(--scanline-color) 50%,
+                transparent 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.6;
         }
 
-        /* Fenêtre Rétro */
-        .retro-window {
-            background: rgba(11, 12, 16, 0.9);
-            border: 4px solid var(--text-main);
-            box-shadow: 8px 8px 0px var(--grid-color);
-            max-width: 800px;
-            margin: 50px auto;
-            position: relative;
-            z-index: 10;
+        /* Grille Synthwave animée */
+        .grid-container {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 50vh;
+            perspective: 600px;
+            z-index: -2;
+            overflow: hidden;
         }
 
-        .window-header {
-            background-color: var(--text-main); color: var(--bg-color);
-            padding: 5px 15px; font-family: 'Press Start 2P', cursive;
-            font-size: 0.8rem; display: flex; justify-content: space-between;
-        }
-
-        .window-content {
-            padding: 30px; font-size: 1.5rem; line-height: 1.6; color: #fff;
-        }
-
-        /* Style du texte converti depuis le Markdown */
-        .window-content h1, .window-content h2, .window-content h3 {
-            font-family: 'Press Start 2P', cursive; color: var(--text-secondary);
-            margin-top: 40px; font-size: 1.2rem; line-height: 1.5;
-        }
-        
-        .window-content h1 { font-size: 1.8rem; color: var(--text-main); text-shadow: 2px 2px 0px #ff007f; }
-        .window-content img { max-width: 100%; border: 2px solid var(--text-main); }
-        .window-content a { color: var(--grid-color); text-decoration: none; }
-        .window-content a:hover { text-decoration: underline; color: var(--text-secondary); }
-
-        /* Bouton Retour */
-        .btn-back {
-            display: block; width: 200px; margin: 20px auto; text-align: center;
-            padding: 15px; font-family: 'Press Start 2P', cursive; font-size: 1rem;
-            color: var(--bg-color); background-color: var(--text-main);
-            border: none; box-shadow: 5px 5px 0px var(--grid-color); text-decoration: none;
-            position: relative; z-index: 10;
-        }
-        .btn-back:hover { background-color: var(--text-secondary); box-shadow: 5px 5px 0px var(--text-main); }
-
-        /* Décoration de fond minimale pour la lecture */
         .grid {
-            position: fixed; width: 200vw; height: 100vh; bottom: -50vh; left: -50vw;
-            background-image: linear-gradient(var(--grid-color) 2px, transparent 2px), linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
-            background-size: 50px 50px; transform: rotateX(75deg); z-index: -2; opacity: 0.3;
+            position: absolute;
+            width: 200vw;
+            height: 200vh;
+            bottom: -50vh;
+            left: -50vw;
+            background-image: 
+                linear-gradient(var(--grid-color) 2px, transparent 2px),
+                linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
+            background-size: 50px 50px;
+            transform: rotateX(75deg);
+            animation: gridMove 2s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: rotateX(75deg) translateY(0); }
+            100% { transform: rotateX(75deg) translateY(50px); }
+        }
+
+        /* Soleil Retrowave */
+        .sun {
+            position: fixed;
+            bottom: 40vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(to bottom, #ffea00, #ff007f);
+            border-radius: 50%;
+            box-shadow: 0 0 50px #ff007f;
+            z-index: -3;
+        }
+
+        .sun::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40%;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 5px,
+                var(--bg-color) 5px,
+                var(--bg-color) 15px
+            );
+            border-radius: 0 0 150px 150px;
+        }
+
+        /* Conteneur principal */
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3rem;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--text-main);
+            text-shadow: 0 0 10px var(--text-main), 0 0 20px var(--text-main), 4px 4px 0px #ff007f;
+            margin-top: 4vh;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* GIF sans fond noir */
+        .pacman-gif {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin: 10px auto 30px auto;
+            display: block;
+            mix-blend-mode: screen;
+            opacity: 0.9;
+        }
+
+        /* Menu de sélection Rétro */
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .nav-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+            padding: 12px 18px;
+            background-color: rgba(11, 12, 16, 0.9);
+            color: var(--text-main);
+            border: 3px solid var(--text-main);
+            box-shadow: 4px 4px 0px var(--grid-color);
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.15s ease-in-out;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--text-secondary);
+            color: var(--bg-color);
+            border-color: var(--text-secondary);
+            box-shadow: 4px 4px 0px var(--grid-color), 0 0 15px var(--text-secondary);
+            transform: translate(-2px, -2px);
+        }
+
+        /* Affichage par défaut (Grille pour les projets) */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        /* Affichage en COLONNE pour la partie Collection */
+        .projects-grid.column-mode {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        .project-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .project-card {
+            background: rgba(11, 12, 16, 0.88);
+            border: 4px solid var(--text-main);
+            padding: 20px;
+            box-shadow: 8px 8px 0px var(--grid-color);
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Style des cartes en mode Colonne (Collection) */
+        .projects-grid.column-mode .project-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            text-align: left;
+            padding: 15px 25px;
+            gap: 20px;
+        }
+
+        .projects-grid.column-mode .project-card h2 {
+            margin: 0;
+            min-width: 280px;
+            font-size: 0.95rem;
+            border-right: 2px solid var(--grid-color);
+            padding-right: 15px;
+        }
+
+        .projects-grid.column-mode .project-card p {
+            margin: 0;
+            flex: 1;
+            font-size: 1.35rem;
+            color: #fff;
+        }
+
+        /* Adaptation sur téléphone pour le mode colonne */
+        @media (max-width: 700px) {
+            .projects-grid.column-mode .project-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .projects-grid.column-mode .project-card h2 {
+                border-right: none;
+                border-bottom: 2px solid var(--grid-color);
+                padding-right: 0;
+                padding-bottom: 8px;
+                width: 100%;
+            }
+        }
+
+        .project-card:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 13px 13px 0px var(--text-secondary), 0 0 20px var(--text-main);
+            border-color: var(--text-secondary);
+        }
+
+        .project-card h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.1rem;
+            color: var(--grid-color);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .project-card p {
+            font-size: 1.3rem;
+            line-height: 1.4;
+        }
+
+        /* Bouton Contact */
+        .btn {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 15px 30px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--bg-color);
+            background-color: var(--text-main);
+            border: none;
+            box-shadow: 5px 5px 0px var(--grid-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--text-secondary);
+            box-shadow: 5px 5px 0px var(--text-main);
+        }
+
+        footer {
+            margin-top: 80px;
+            padding-bottom: 20px;
+            font-size: 1.2rem;
+            color: rgba(0, 240, 255, 0.5);
         }
     </style>
 </head>
 <body>
-    <div class="grid" style="perspective: 600px;"></div>
 
-    <a href="index.html" class="btn-back">RETOUR</a>
-
-    <div class="retro-window">
-        <div class="window-header">
-            <span>READER.EXE</span>
-            <span>[X]</span>
-        </div>
-        <!-- C'est ici que l'article va s'afficher tout seul -->
-        <div class="window-content" id="article-content">
-            <p style="color: var(--grid-color);">>>> CHARGEMENT DES DONNÉES...</p>
-        </div>
+    <div class="sun"></div>
+    <div class="grid-container">
+        <div class="grid"></div>
     </div>
 
+    <div class="content">
+        <h1>Power JV Lab</h1>
+        
+        <img src="6843cc365df18febde115bc70eb15290.gif" alt="System Boot" class="pacman-gif">
+
+        <!-- Menu de sélection des catégories -->
+        <div class="nav-menu">
+            <button class="nav-btn active" onclick="filtrer('tous', this)">TOUT VOIR</button>
+            <button class="nav-btn" onclick="filtrer('en-cours', this)">PROJETS EN COURS</button>
+            <button class="nav-btn" onclick="filtrer('termine', this)">PROJETS TERMINÉS</button>
+            <button class="nav-btn" onclick="filtrer('ordi', this)">COLLECTION ORDI</button>
+            <button class="nav-btn" onclick="filtrer('console', this)">COLLECTION CONSOLES</button>
+        </div>
+
+        <div class="projects-grid" id="main-grid">
+
+            <!-- ================= PROJETS EN COURS ================= -->
+            <a href="article.html?id=premier-article" class="project-link" data-category="en-cours">
+                <div class="project-card">
+                    <h2>RECRÉATION JOYSTICK FAIRCHILD CHANNEL F</h2>
+                    <p>Travaille actuellement sur la recréation complète du joystick de la Fairchild Channel F.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=ps2-eyetoy" class="project-link" data-category="en-cours">
+                <div class="project-card">
+                    <h2>REVERSE ENGINEERING<br>PS2 EYETOY: CHAT</h2>
+                    <p>Analyse du trafic réseau et rétro-ingénierie des serveurs Medius/SCERT. Compilation d'exécutables ELF avec le PS2SDK pour restaurer les fonctionnalités en ligne.</p>
+                </div>
+            </a>
+
+            <!-- ================= PROJETS TERMINÉS ================= -->
+            <a href="article.html?id=apple-ii" class="project-link" data-category="termine">
+                <div class="project-card">
+                    <h2>APPLE II EUROPLUS<br>& ECRANS CRT</h2>
+                    <p>Restauration d'alimentations Astec (suppression des condensateurs RIFA) et maintenance de moniteurs cathodiques Thomson et Sony Trinitron.</p>
+                </div>
+            </a>
+
+            <!-- ================= COLLECTION ORDI ================= -->
+            <!-- GAMME APPLE -->
+            <a href="article.html?id=apple-2e" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>APPLE IIe</h2>
+                    <p>Périphériques : Joystick.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=apple-2-europlus" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>APPLE II EUROPLUS</h2>
+                    <p>Périphériques & Extensions : Diverses cartes d'extension mémoire et vidéo, carte UHF SECAM composite, 2 lecteurs de disquettes.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=apple-2c" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>APPLE IIc</h2>
+                    <p>Périphériques : Souris officielle.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=powerbook-140" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>APPLE POWERBOOK 140</h2>
+                    <p>Accessoires : Sacoche de transport, lecteur de disquettes externe 3.5".</p>
+                </div>
+            </a>
+
+            <!-- ATARI & AMIGA -->
+            <a href="article.html?id=atari-800xl" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>ATARI 800XL</h2>
+                    <p>Périphériques : Lecteur de cassettes (K7).</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=amiga-500" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>COMMODORE AMIGA 500</h2>
+                    <p>Extensions : Extension mémoire.</p>
+                </div>
+            </a>
+
+            <!-- GAMME THOMSON -->
+            <a href="article.html?id=thomson-mo5" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>THOMSON MO5</h2>
+                    <p>Périphériques & Extensions : Lecteur K7 MO5, extension mémoire 64K, extension musique et jeux, extension RS232, extension incrustation vidéo.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=thomson-mo6" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>THOMSON MO6</h2>
+                    <p>Périphériques & Extensions : Lecteur K7 intégré, compatible extensions musique et jeux, RS232 et incrustation vidéo.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=thomson-to7" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>THOMSON TO7</h2>
+                    <p>Périphériques & Extensions : Lecteur K7 TO7, extension mémoire 16K, extension musique et jeux, extension RS232, extension incrustation vidéo.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=thomson-to7-70" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>THOMSON TO7/70</h2>
+                    <p>Périphériques & Extensions : Lecteur K7 TO7, extensions musique et jeux, RS232 et incrustation vidéo.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=thomson-to8" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>THOMSON TO8</h2>
+                    <p>Périphériques & Extensions : Lecteur de disquettes 3.5" TO8, extensions musique et jeux, RS232 et incrustation vidéo.</p>
+                </div>
+            </a>
+
+            <!-- GAMME MATRA ALICE -->
+            <a href="article.html?id=alice-32" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>MATRA ALICE 32</h2>
+                    <p>Périphériques & Extensions : Lecteur K7, extension joystick, extension télématique Minitel.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=alice-90" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>MATRA ALICE 90</h2>
+                    <p>Périphériques & Extensions : Lecteur K7, extension joystick, extension télématique Minitel.</p>
+                </div>
+            </a>
+
+            <!-- GAMME MICRONIQUE HECTOR / VICTOR -->
+            <a href="article.html?id=hector-2hr" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>MICRONIQUE HECTOR 2HR</h2>
+                    <p>Périphériques : Magnétophone intégré, joystick officiel.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=hector-2hr-plus" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>MICRONIQUE HECTOR 2HR+</h2>
+                    <p>Configuration & Périphériques : Basic III intégré, magnétophone intégré, joystick officiel.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=victor-2hr" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>MICRONIQUE VICTOR 2HR</h2>
+                    <p>Périphériques : Magnétophone intégré, joystick officiel.</p>
+                </div>
+            </a>
+
+            <!-- GAMME ORIC -->
+            <a href="article.html?id=oric-1" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>ORIC-1</h2>
+                    <p>Configuration : Unité centrale.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=oric-atmos" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>ORIC ATMOS</h2>
+                    <p>Configuration : Unité centrale à clavier mécanique.</p>
+                </div>
+            </a>
+
+            <!-- CAMPUTERS LYNX -->
+            <a href="article.html?id=lynx-48k" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>CAMPUTERS LYNX 48K</h2>
+                    <p>Configuration : Modèle 48K.</p>
+                </div>
+            </a>
+
+            <!-- GAMME AMSTRAD -->
+            <a href="article.html?id=cpc-464-meca" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>AMSTRAD CPC 464 (TOUCHES HAUTES)</h2>
+                    <p>Périphériques : Moniteurs monochrome et couleur, tuner TV, adaptateur MP3, lecteur de disquettes DD1, joystick officiel.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=cpc-464" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>AMSTRAD CPC 464</h2>
+                    <p>Périphériques : Moniteurs monochrome et couleur, tuner TV, adaptateur MP3, lecteur de disquettes DD1, joystick officiel.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=cpc-6128" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>AMSTRAD CPC 6128</h2>
+                    <p>Périphériques : Moniteurs monochrome et couleur, tuner TV, adaptateur MP3, joystick officiel.</p>
+                </div>
+            </a>
+
+            <!-- GAMME SINCLAIR -->
+            <a href="article.html?id=zx81" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>SINCLAIR ZX81</h2>
+                    <p>Périphériques & Extensions : Extension mémoire 16K, extension joystick.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=spectrum-plus" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>SINCLAIR ZX SPECTRUM+</h2>
+                    <p>Configuration : Unité centrale à clavier mécanique.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=spectrum-plus2" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>SINCLAIR ZX SPECTRUM +2</h2>
+                    <p>Périphériques : Magnétophone Datacorder intégré, joystick officiel +2.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=sinclair-ql" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>SINCLAIR QL</h2>
+                    <p>Configuration : Unité centrale avec lecteurs Microdrive.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=sinclair-pc200" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>SINCLAIR PC200</h2>
+                    <p>Configuration : Unité centrale compatible PC.</p>
+                </div>
+            </a>
+
+            <!-- GAMME COMMODORE 8-BITS -->
+            <a href="article.html?id=vic-20" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>COMMODORE VIC-20</h2>
+                    <p>Périphériques : Lecteur de disquettes, 2 lecteurs K7 (VIC-20 / C64).</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=c64" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>COMMODORE 64 (C64)</h2>
+                    <p>Périphériques : Lecteur de disquettes, 2 lecteurs K7 (VIC-20 / C64).</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=c128" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>COMMODORE 128 (C128)</h2>
+                    <p>Périphériques : Lecteur de disquettes, lecteur K7.</p>
+                </div>
+            </a>
+
+            <!-- EXELVISION -->
+            <a href="article.html?id=exl100" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>EXELVISION EXL 100</h2>
+                    <p>Périphériques & Extensions : Clavier mécanique sans fil, extension modem, joystick, lecteur de K7 officiel.</p>
+                </div>
+            </a>
+
+            <!-- SPECTRAVIDEO & STANDARD MSX 1 & 2 -->
+            <a href="article.html?id=svi-328" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>SPECTRAVIDEO SVI-328</h2>
+                    <p>Périphériques : Lecteur de K7 officiel Spectravideo, joystick Spectravideo.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=sony-hb501f" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>MSX SONY HB-501F</h2>
+                    <p>Périphériques : Lecteur K7 Bitcorder intégré.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=philips-vg8245" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>MSX 2 PHILIPS VG-8245</h2>
+                    <p>Périphériques : Lecteur de disquettes 3.5" intégré.</p>
+                </div>
+            </a>
+
+            <!-- PHILIPS, SEGA, SHARP, ACORN -->
+            <a href="article.html?id=philips-vg5000" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>PHILIPS VG5000</h2>
+                    <p>Périphériques & Extensions : Extension VG5216, extension joystick, joystick, lecteur de K7 officiel.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=sega-sc3000h" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>SEGA SC-3000H</h2>
+                    <p>Périphériques : Clavier mécanique, joystick officiel, lecteur de K7 officiel.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=sharp-mz700" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>SHARP MZ-700</h2>
+                    <p>Configuration : Unité centrale.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=acorn-electron" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>ACORN ELECTRON</h2>
+                    <p>Extensions : Extension Plus 2 (+2).</p>
+                </div>
+            </a>
+
+            <!-- TANDY & DRAGON -->
+            <a href="article.html?id=tandy-coco2" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>TANDY COCO 2 (64K)</h2>
+                    <p>Périphériques : Joystick officiel, lecteur de K7 officiel.</p>
+                </div>
+            </a>
+
+            <a href="article.html?id=dragon-32" class="project-link" data-category="ordi">
+                <div class="project-card">
+                    <h2>DRAGON 32</h2>
+                    <p>Configuration : Unité centrale 32K.</p>
+                </div>
+            </a>
+
+            <!-- ================= COLLECTION CONSOLES ================= -->
+            <a href="article.html?id=fairchild-console" class="project-link" data-category="console">
+                <div class="project-card">
+                    <h2>FAIRCHILD CHANNEL F</h2>
+                    <p>Première console de jeux vidéo programmable à cartouches ROM de l'histoire.</p>
+                </div>
+            </a>
+
+        </div>
+
+        <a href="mailto:contact@powerretrolab.com" class="btn">CONTACT</a>
+
+        <footer>
+            (c) 2026 POWER JV LAB // Cripfoun
+        </footer>
+    </div>
+
+    <!-- Script pour filtrer les cartes et basculer l'affichage en colonne -->
     <script>
-        // Ce script regarde l'URL pour savoir quel article charger
-        const urlParams = new URLSearchParams(window.location.search);
-        const articleID = urlParams.get('id');
+        function filtrer(categorie, boutonClique) {
+            const boutons = document.querySelectorAll('.nav-btn');
+            boutons.forEach(btn => btn.classList.remove('active'));
+            boutonClique.classList.add('active');
 
-        const contentDiv = document.getElementById('article-content');
+            const grille = document.getElementById('main-grid');
+            if (categorie === 'ordi' || categorie === 'console') {
+                grille.classList.add('column-mode');
+            } else {
+                grille.classList.remove('column-mode');
+            }
 
-        if (articleID) {
-            // Va chercher le fichier texte dans le dossier 'articles'
-            fetch(`articles/${articleID}.md`)
-                .then(response => {
-                    if (!response.ok) throw new Error("Fichier introuvable");
-                    return response.text();
-                })
-                .then(text => {
-                    // Convertit le Markdown en HTML Rétro
-                    contentDiv.innerHTML = marked.parse(text);
-                })
-                .catch(error => {
-                    contentDiv.innerHTML = `<h1>ERREUR 404</h1><p style="color: red;">Données corrompues ou introuvables sur le secteur ${articleID}.</p>`;
-                });
-        } else {
-            contentDiv.innerHTML = `<h1>ERREUR SYSTEME</h1><p>Aucun identifiant d'article fourni.</p>`;
+            const cartes = document.querySelectorAll('.project-link');
+            cartes.forEach(carte => {
+                if (categorie === 'tous' || carte.getAttribute('data-category') === categorie) {
+                    carte.style.display = 'block';
+                } else {
+                    carte.style.display = 'none';
+                }
+            });
         }
     </script>
+
 </body>
 </html>
