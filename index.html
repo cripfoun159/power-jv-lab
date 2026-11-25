@@ -200,10 +200,11 @@
             box-sizing: border-box;
         }
 
-        /* Style des cartes en mode Colonne (Collection) */
+        /* Style des cartes en mode Colonne (Collection avec retour à la ligne pour le menu déroulant) */
         .projects-grid.column-mode .project-card {
             display: flex;
             flex-direction: row;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             text-align: left;
@@ -219,11 +220,49 @@
             padding-right: 15px;
         }
 
+        /* Indicateur [+] et [-] style rétro */
+        .projects-grid.column-mode .project-card h2::before {
+            content: "[+] ";
+            color: var(--text-secondary);
+        }
+
+        .projects-grid.column-mode .project-card.open h2::before {
+            content: "[-] ";
+            color: var(--text-main);
+        }
+
         .projects-grid.column-mode .project-card p {
             margin: 0;
             flex: 1;
+            min-width: 220px;
             font-size: 1.35rem;
             color: #fff;
+        }
+
+        /* Bloc déroulant contenant les photos (caché par défaut) */
+        .card-photos {
+            display: none;
+            flex: 0 0 100%;
+            width: 100%;
+            margin-top: 15px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--grid-color);
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Affichage des photos quand la carte est cliquée (.open) */
+        .project-card.open .card-photos {
+            display: grid;
+        }
+
+        .card-photos img {
+            width: 100%;
+            height: auto;
+            border: 3px solid var(--text-main);
+            box-shadow: 5px 5px 0px var(--grid-color);
+            display: block;
         }
 
         /* Adaptation sur téléphone pour le mode colonne */
@@ -320,8 +359,10 @@
                 </div>
             </a>
 
-            <a href="article.html?id=" class="project-link" data-category="en-cours">
+            <a href="article.html?id=ps2-eyetoy" class="project-link" data-category="en-cours">
                 <div class="project-card">
+                    <h2>REVERSE ENGINEERING<br>PS2 EYETOY: CHAT</h2>
+                    <p>Analyse du trafic réseau et rétro-ingénierie des serveurs Medius/SCERT. Compilation d'exécutables ELF avec le PS2SDK pour restaurer les fonctionnalités en ligne.</p>
                 </div>
             </a>
 
@@ -335,28 +376,28 @@
 
             <!-- ================= COLLECTION ORDI ================= -->
             <!-- GAMME APPLE -->
-            <a href="article.html?id=apple-2e" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>APPLE IIe</h2>
                     <p>Périphériques : Joystick.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=apple-2-europlus" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>APPLE II EUROPLUS</h2>
                     <p>Périphériques & Extensions : Diverses cartes d'extension mémoire et vidéo, carte UHF SECAM composite, 2 lecteurs de disquettes.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=apple-2c" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>APPLE IIc</h2>
                     <p>Périphériques : Souris officielle.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=powerbook-140" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>APPLE POWERBOOK 140</h2>
                     <p>Accessoires : Sacoche de transport, lecteur de disquettes externe 3.5".</p>
@@ -364,14 +405,14 @@
             </a>
 
             <!-- ATARI & AMIGA -->
-            <a href="article.html?id=atari-800xl" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>ATARI 800XL</h2>
                     <p>Périphériques : Lecteur de cassettes (K7).</p>
                 </div>
             </a>
 
-            <a href="article.html?id=amiga-500" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>COMMODORE AMIGA 500</h2>
                     <p>Extensions : Extension mémoire.</p>
@@ -379,36 +420,38 @@
             </a>
 
             <!-- GAMME THOMSON -->
-            <a href="article.html?id=thomson-mo5" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>THOMSON MO5</h2>
-                    <!-- Ajout de l'image ici -->
-                    <img src="image/IMG_0110.webp" alt="Thomson MO5" style="max-width: 100%; height: auto; border: 2px solid var(--text-main); margin-bottom: 15px; display: block;">
                     <p>Périphériques & Extensions : Lecteur K7 MO5, extension mémoire 64K, extension musique et jeux, extension RS232, extension incrustation vidéo.</p>
+                    <div class="card-photos">
+                        <img src="image/IMG_0110.webp" alt="Thomson MO5">
+                    </div>
                 </div>
             </a>
-            <a href="article.html?id=thomson-mo6" class="project-link" data-category="ordi">
+
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>THOMSON MO6</h2>
                     <p>Périphériques & Extensions : Lecteur K7 intégré, compatible extensions musique et jeux, RS232 et incrustation vidéo.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=thomson-to7" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>THOMSON TO7</h2>
                     <p>Périphériques & Extensions : Lecteur K7 TO7, extension mémoire 16K, extension musique et jeux, extension RS232, extension incrustation vidéo.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=thomson-to7-70" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>THOMSON TO7/70</h2>
                     <p>Périphériques & Extensions : Lecteur K7 TO7, extensions musique et jeux, RS232 et incrustation vidéo.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=thomson-to8" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>THOMSON TO8</h2>
                     <p>Périphériques & Extensions : Lecteur de disquettes 3.5" TO8, extensions musique et jeux, RS232 et incrustation vidéo.</p>
@@ -416,14 +459,14 @@
             </a>
 
             <!-- GAMME MATRA ALICE -->
-            <a href="article.html?id=alice-32" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>MATRA ALICE 32</h2>
                     <p>Périphériques & Extensions : Lecteur K7, extension joystick, extension télématique Minitel.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=alice-90" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>MATRA ALICE 90</h2>
                     <p>Périphériques & Extensions : Lecteur K7, extension joystick, extension télématique Minitel.</p>
@@ -431,21 +474,21 @@
             </a>
 
             <!-- GAMME MICRONIQUE HECTOR / VICTOR -->
-            <a href="article.html?id=hector-2hr" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>MICRONIQUE HECTOR 2HR</h2>
                     <p>Périphériques : Magnétophone intégré, joystick officiel.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=hector-2hr-plus" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>MICRONIQUE HECTOR 2HR+</h2>
                     <p>Configuration & Périphériques : Basic III intégré, magnétophone intégré, joystick officiel.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=victor-2hr" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>MICRONIQUE VICTOR 2HR</h2>
                     <p>Périphériques : Magnétophone intégré, joystick officiel.</p>
@@ -453,14 +496,14 @@
             </a>
 
             <!-- GAMME ORIC -->
-            <a href="article.html?id=oric-1" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>ORIC-1</h2>
                     <p>Configuration : Unité centrale.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=oric-atmos" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>ORIC ATMOS</h2>
                     <p>Configuration : Unité centrale à clavier mécanique.</p>
@@ -468,7 +511,7 @@
             </a>
 
             <!-- CAMPUTERS LYNX -->
-            <a href="article.html?id=lynx-48k" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>CAMPUTERS LYNX 48K</h2>
                     <p>Configuration : Modèle 48K.</p>
@@ -476,21 +519,21 @@
             </a>
 
             <!-- GAMME AMSTRAD -->
-            <a href="article.html?id=cpc-464-meca" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>AMSTRAD CPC 464 (TOUCHES HAUTES)</h2>
                     <p>Périphériques : Moniteurs monochrome et couleur, tuner TV, adaptateur MP3, lecteur de disquettes DD1, joystick officiel.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=cpc-464" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>AMSTRAD CPC 464</h2>
                     <p>Périphériques : Moniteurs monochrome et couleur, tuner TV, adaptateur MP3, lecteur de disquettes DD1, joystick officiel.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=cpc-6128" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>AMSTRAD CPC 6128</h2>
                     <p>Périphériques : Moniteurs monochrome et couleur, tuner TV, adaptateur MP3, joystick officiel.</p>
@@ -498,35 +541,35 @@
             </a>
 
             <!-- GAMME SINCLAIR -->
-            <a href="article.html?id=zx81" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>SINCLAIR ZX81</h2>
                     <p>Périphériques & Extensions : Extension mémoire 16K, extension joystick.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=spectrum-plus" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>SINCLAIR ZX SPECTRUM+</h2>
                     <p>Configuration : Unité centrale à clavier mécanique.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=spectrum-plus2" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>SINCLAIR ZX SPECTRUM +2</h2>
                     <p>Périphériques : Magnétophone Datacorder intégré, joystick officiel +2.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=sinclair-ql" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>SINCLAIR QL</h2>
                     <p>Configuration : Unité centrale avec lecteurs Microdrive.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=sinclair-pc200" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>SINCLAIR PC200</h2>
                     <p>Configuration : Unité centrale compatible PC.</p>
@@ -534,21 +577,21 @@
             </a>
 
             <!-- GAMME COMMODORE 8-BITS -->
-            <a href="article.html?id=vic-20" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>COMMODORE VIC-20</h2>
                     <p>Périphériques : Lecteur de disquettes, 2 lecteurs K7 (VIC-20 / C64).</p>
                 </div>
             </a>
 
-            <a href="article.html?id=c64" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>COMMODORE 64 (C64)</h2>
                     <p>Périphériques : Lecteur de disquettes, 2 lecteurs K7 (VIC-20 / C64).</p>
                 </div>
             </a>
 
-            <a href="article.html?id=c128" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>COMMODORE 128 (C128)</h2>
                     <p>Périphériques : Lecteur de disquettes, lecteur K7.</p>
@@ -556,7 +599,7 @@
             </a>
 
             <!-- EXELVISION -->
-            <a href="article.html?id=exl100" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>EXELVISION EXL 100</h2>
                     <p>Périphériques & Extensions : Clavier mécanique sans fil, extension modem, joystick, lecteur de K7 officiel.</p>
@@ -564,21 +607,21 @@
             </a>
 
             <!-- SPECTRAVIDEO & STANDARD MSX 1 & 2 -->
-            <a href="article.html?id=svi-328" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>SPECTRAVIDEO SVI-328</h2>
                     <p>Périphériques : Lecteur de K7 officiel Spectravideo, joystick Spectravideo.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=sony-hb501f" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>MSX SONY HB-501F</h2>
                     <p>Périphériques : Lecteur K7 Bitcorder intégré.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=philips-vg8245" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>MSX 2 PHILIPS VG-8245</h2>
                     <p>Périphériques : Lecteur de disquettes 3.5" intégré.</p>
@@ -586,28 +629,28 @@
             </a>
 
             <!-- PHILIPS, SEGA, SHARP, ACORN -->
-            <a href="article.html?id=philips-vg5000" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>PHILIPS VG5000</h2>
                     <p>Périphériques & Extensions : Extension VG5216, extension joystick, joystick, lecteur de K7 officiel.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=sega-sc3000h" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>SEGA SC-3000H</h2>
                     <p>Périphériques : Clavier mécanique, joystick officiel, lecteur de K7 officiel.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=sharp-mz700" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>SHARP MZ-700</h2>
                     <p>Configuration : Unité centrale.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=acorn-electron" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>ACORN ELECTRON</h2>
                     <p>Extensions : Extension Plus 2 (+2).</p>
@@ -615,14 +658,14 @@
             </a>
 
             <!-- TANDY & DRAGON -->
-            <a href="article.html?id=tandy-coco2" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>TANDY COCO 2 (64K)</h2>
                     <p>Périphériques : Joystick officiel, lecteur de K7 officiel.</p>
                 </div>
             </a>
 
-            <a href="article.html?id=dragon-32" class="project-link" data-category="ordi">
+            <a href="#" class="project-link" data-category="ordi">
                 <div class="project-card">
                     <h2>DRAGON 32</h2>
                     <p>Configuration : Unité centrale 32K.</p>
@@ -630,7 +673,7 @@
             </a>
 
             <!-- ================= COLLECTION CONSOLES ================= -->
-            <a href="article.html?id=fairchild-console" class="project-link" data-category="console">
+            <a href="#" class="project-link" data-category="console">
                 <div class="project-card">
                     <h2>FAIRCHILD CHANNEL F</h2>
                     <p>Première console de jeux vidéo programmable à cartouches ROM de l'histoire.</p>
@@ -646,7 +689,7 @@
         </footer>
     </div>
 
-    <!-- Script pour filtrer les cartes et basculer l'affichage en colonne -->
+    <!-- Script pour filtrer les cartes et gérer le menu déroulant des photos -->
     <script>
         function filtrer(categorie, boutonClique) {
             const boutons = document.querySelectorAll('.nav-btn');
@@ -669,6 +712,15 @@
                 }
             });
         }
+
+        // Ouvre/ferme le tiroir de photos au clic sur un ordinateur ou une console
+        document.querySelectorAll('.project-link[data-category="ordi"], .project-link[data-category="console"]').forEach(lien => {
+            lien.addEventListener('click', function(event) {
+                event.preventDefault(); // Reste sur la même page
+                const carte = this.querySelector('.project-card');
+                carte.classList.toggle('open');
+            });
+        });
     </script>
 
 </body>
